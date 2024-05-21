@@ -63,7 +63,7 @@ struct NewAccountView: View {
                 .simultaneousGesture(TapGesture() .onEnded({ _ in
                     addItem(name: name, email_num: email_number, password: password)
                 }))
-                .disabled(!validEmailNum && !passwordValidity.isEmpty)
+                .disabled(!validEmailNum || !(passwordValidity == "valid password") || (email_number.isEmpty || name.isEmpty))
                 .onDisappear(perform: {
                     name = ""
                     email_number = ""
@@ -74,13 +74,10 @@ struct NewAccountView: View {
             // To check the email or phone number is valid or not
             .onChange(of: email_number) {
                 validEmailNum = validEmailNumber(email_number)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                    if !email_number.isEmpty {
-                        validity =  validEmailNum ? "" : "invalid email or number"
-                    } else {
-                        validity = ""
-                    }
-                    
+                if !email_number.isEmpty {
+                    validity =  validEmailNum ? "" : "invalid email or number"
+                } else {
+                    validity = ""
                 }
             }
             .onChange(of: password) {
@@ -140,7 +137,7 @@ struct NewAccountView: View {
             return "password should contains atleast 1 special character"
         }
         else {
-            return ""
+            return "valid password"
         }
     }
 
