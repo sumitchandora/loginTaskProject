@@ -84,9 +84,7 @@ struct NewAccountView: View {
                 }
             }
             .onChange(of: password) {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                    passwordValidity = password.isEmpty ? "" : passwordValidation(name: name, password: password)
-                }
+                passwordValidity = password.isEmpty ? "" : passwordValidation(name: name, password: password)
             }
             .navigationTitle("Create Account")
         }
